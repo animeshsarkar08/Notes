@@ -1,0 +1,55 @@
+The SQL statements are 3 ORDERS:-
+
+	1] LEXICAL order => order in which clauses are WRITTEN, if order of writting is wrong SQL will throw an ERROR 
+	2] LOGICAL order => order in which clauses are executed logically i.e. order at which DBMS interpret(READ) the clauses
+	3] EFFECTIVE order => TRUE order of EXECUTION after engine's optimization i.e. order at which DBMS executes the 
+	                      clauses for optimization(to save processing power and memory).
+
+#LEXICAL ORDER:-
+-----------------
+ we write our query, and run, we get no error. Hence our lexical order(written order) is correct. 
+LINE      STATEMENTS	
+------  -----------------------------------
+1 --->  SELECT class, AVG(level) AS avg_level
+2 --->	FROM Table
+3 --->	WHERE is_alive = true
+4 --->	GROUP BY class
+5 --->	HAVING AVG(level) > 22
+6 --->	ORDER BY AVG(level) DESC 
+7 --->	LIMIT 4;
+
+#LOGICAL ORDER:-
+-----------------
+ At this stage, DBMS will READ the clauses
+
+	  1st          2nd         3rd          4th            5th        6th           7th           8th           9th
++------------+   +-----+   +--------+	+------------+	 +------+   +------+   +-----------+   +--------+   +----------+
+|FROM & JOINS| ->|WHERE| ->|GROUP BY| ->|AGGREGATIONS| ->|HAVING| ->|WINDOW| ->|SELECT & AS| ->|DISTINCT| ->|UNION(ALL)| ->
++------------+   +-----+   +--------+	+------------+	 +------+	+------+   +-----------+   +--------+	+----------+	
+
+   10th        11th
++--------+    +-----+
+|ORDER BY| -> |LIMIT|
++--------+    +-----+
+
+Rules:-
+0) Operations are executed sequentially, 1st to 11th.
+
+1) An operation can only use data produced by operation BEFORE IT.
+   Eg -> AGGREGATION can use only data produced by FROM,JOINS,WHERE and	GROUP BY, it cannot use data from HAVING or after that.
+
+2) An operation DOESN'T know data produced by operations AFTER IT.
+   Eg -> HAVING clauses has no idea what is being produced by WINDOW or SELECT or DISTINCT etc.
+
+
+Taking the example of above the Logical order of the above query will be:-
+
+2 --->	FROM Table
+3 --->	WHERE is_alive = true
+4 --->	GROUP BY class
+5 --->	HAVING AVG(level) > 22 (AVG() will READ first, then HAVING clause i.e. the comparsion)
+1 --->  SELECT class, AVG(level) AS avg_level
+2 --->	FROM Table
+6 --->	ORDER BY AVG(level) DESC 
+7 --->	LIMIT 4;
+

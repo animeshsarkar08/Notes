@@ -1,0 +1,26 @@
+Diff b/w spreadsheets and SQL tables?
+
+1) In spreadsheets doesnot have a pre-define schema and columns(attributes) can hold(store) any type of data.
+
+ ID		|	NAME	|	AGE 
+ ----------------------------------
+ 1			john		67
+ 2			sam			34
+ unknown	76			not define
+ 
+But in SQL tables there is a pre-define schema and columns have a particular DATATYPE
+
+COLUMN	  |	DATATYPE	
+----------------------
+ID		    integer		 
+NAME		string		        datatypes defines
+AGE			integer			---------------------->>>  	types of OPERATIONS performed on the COLUMN
+data_join   timestamp
+height      float
+
+2)spreadsheets are usually disconnected, but 
+		
+					connected 
+	SQL tables	 ------------>>>  FOREIGN KEYS
+					 using	
+
