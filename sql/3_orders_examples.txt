@@ -1,0 +1,29 @@
+SELECT name, age , sal AS annual_salary,
+annual_salary / 12 AS monthly_salary 
+FROM Employees
+
+OUPUT:annual_salary is Not found
+
+Problem: Why b/c SELECT and Aliases(AS) are processed(READ) at same time 
+hence SELECT is not aware of the new name assigned
+
+Solution : Is to use the original column name of the table
+
+SELECT name, age , salary AS annual_salary,
+salary / 12 AS monthly_salary 
+FROM Employees
+
+
+
+SELECT name, level, level / 10 AS level_scaled
+From Characters
+WHERE level_scaled > 3
+
+OUTPUT: level_scaled not found
+
+Solution:
+SELECT name, level, level / 10 AS level_scaled
+From Characters
+WHERE (level / 10) > 3
+
+
